@@ -1,10 +1,10 @@
 import sharp from "sharp";
 
-async function resizeImage(imageBuffer: Buffer, width: number, 
-    height: number): Promise<Buffer> {
+async function resizeImage(imageBuffer: Buffer, width: number, height: number): Promise<Buffer> {
     try {
         const resizedImage = await sharp(imageBuffer)
             .resize(width, height)
+            .jpeg() // Ensure the output is in jpg format
             .toBuffer();
         return resizedImage;
     } catch (error) {
