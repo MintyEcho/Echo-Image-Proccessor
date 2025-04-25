@@ -1,0 +1,29 @@
+{
+  "dependencies": {
+    "express": "^5.1.0",
+    "jasmine": "^5.6.0",
+    "jasmine-spec-reporter": "^7.0.0",
+    "ts": "^0.0.0"
+  },
+  "name": "echo-image-proccessor",
+  "version": "1.0.0",
+  "main": "index.js",
+  "devDependencies": {
+    "@types/express": "^5.0.1",
+    "@types/jasmine": "^5.1.7",
+    "@types/node": "^22.15.1",
+    "nodemon": "^3.1.10",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.8.3"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "npx tsc",
+    "jasmine": "jasmine",
+    "start": "nodemon src/index.ts"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": ""
+}
