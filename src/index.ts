@@ -1,11 +1,10 @@
 import express from 'express';
-
+import rtr from './routes/mainRoutes';
 const exp = express();
 const PORT = 3000;
 
-exp.get('/api', (req, res) => {
-    res.send('Hello, world!');
-});
+exp.use('/api', rtr);
+
 exp.listen(PORT, ()=> {
     console.log(`server started at localhost:${PORT}`)
 });
