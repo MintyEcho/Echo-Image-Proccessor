@@ -1,5 +1,6 @@
 import express from 'express';
 import rtr from './routes/mainRoutes';
+import resizeImage from './controllers/ImageResize';
 const exp = express();
 const PORT = 3000;
 
