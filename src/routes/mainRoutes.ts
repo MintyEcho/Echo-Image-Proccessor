@@ -1,11 +1,9 @@
 import  express  from "express" ;
-import resizeImage from "../controllers/ImageResize";
-import { Request, Response } from "express" ;
+import resizeRt from "./api/resizeRt";
+
 
 const rtr = express.Router() ;
 
-rtr.get('/', (req: Request, res: Response) => {
-    res.send('I am echo of the mint');
-});
+rtr.use('/resize', resizeRt);
 
 export default rtr ;
