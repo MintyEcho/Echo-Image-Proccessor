@@ -4,7 +4,7 @@ async function resizeImage(imageBuffer: Buffer, width: number, height: number): 
     try {
         const resizedImage = await sharp(imageBuffer)
             .resize(width, height)
-            .jpeg() // Ensure the output is in jpg format
+            .png() // Ensure the output is in png format
             .toBuffer();
         return resizedImage;
     } catch (error) {
