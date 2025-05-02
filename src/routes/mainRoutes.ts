@@ -1,9 +1,10 @@
-import  express  from "express" ;
-import resizeRt from "./api/resizeRt";
+import { Router } from 'express';
+import uploadRt from './api/uploadRt';
+import resizeRt from './api/resizeRt';
 
+const router = Router();
 
-const rtr = express.Router() ;
+router.use('/api', uploadRt);
+router.use('/api', resizeRt);
 
-rtr.use('/resize', resizeRt);
-
-export default rtr ;
+export default router;

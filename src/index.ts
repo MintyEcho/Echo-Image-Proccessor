@@ -1,20 +1,17 @@
 import express from 'express';
 import mainRoutes from './routes/mainRoutes';
-import resizeRt from './routes/api/resizeRt';
 
 const app = express();
-const PORT = 3000;
-
-// Middleware to parse JSON
 app.use(express.json());
+app.use(mainRoutes);
 
-app.get('/', (req, res) => {
-    res.send('Gekko: Main thingie');
+// error handler
+app.use((err: any, _req: express.Request, res: express.Response, _next: express.NextFunction) => {
+  console.error(err);
+  res.status(500).json({ error: err.message });
 });
-
-// Use the main routes
-app.use('/', mainRoutes);
-app.use('/resize', resizeRt);
+const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
-  console.log(`Server is running on http://localhost:${PORT}`);
+  console.log(`🚀 Server listening on http://localhost:${PORT}`);
 });
+export default app;
