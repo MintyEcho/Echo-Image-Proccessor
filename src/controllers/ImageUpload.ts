@@ -25,9 +25,7 @@ const fileFilter = (_req: Request, file: Express.Multer.File, cb: multer.FileFil
 };
 export const uploadMiddleware = multer({ storage, fileFilter });
 
-/**
- * This is the handler you just pasted in:
- */
+
 export const uploadImage = async (
   req: Request,
   res: Response,
