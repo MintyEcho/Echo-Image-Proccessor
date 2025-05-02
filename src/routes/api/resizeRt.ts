@@ -15,7 +15,6 @@ resizeRt.get('/', async (req, res) => {
     const imageBuffer = fs.readFileSync(imagePath);
     
     const resizedImage = await resizeImage(imageBuffer, 200, 200);
-    console.log(resizedImage); // Log the resolved path
     res.set('Content-Type', 'image/png');  // for PNG
     res.send(resizedImage)});
 
