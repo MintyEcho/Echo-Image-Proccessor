@@ -1,4 +1,3 @@
-
 import express from 'express';
 import { uploadMiddleware } from '../../controllers/ImageUpload';
 import { uploadAndResize } from '../../controllers/uploadResize';
