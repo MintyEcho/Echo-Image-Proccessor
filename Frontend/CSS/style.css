@@ -1,0 +1,71 @@
+h1{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    background-color: whitesmoke;
+}
+body{
+    background-color: #393E45 !important;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    font-family: sans-serif;
+}
+  /* this code for nav bar */
+.topnav{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    flex-wrap: nowrap;
+    background-color: mediumseagreen;
+    overflow: hidden;
+    grid-area: top;
+}
+.topnav a {
+    float: left;
+    padding: 14px 16px;
+    text-align: center;
+    color: white;
+    text-decoration: none;
+}
+.topnav a:hover {
+    background-color: #393E45;
+    color: white;
+}
+.topnav a.MAD {
+    background-color: #05c264;
+    color: white;
+}
+.topnav a.MAD:hover {
+    background-color: #393E45;
+    color: white;}
+ /* container and its' cards */
+.container{
+     display: grid;
+     grid-template-areas:
+     "main1 "
+     "main2 ";
+     row-gap: 1ch;
+ }
+ .Form{
+     border: 1px;
+     border-color: black;
+     background-color: springgreen;
+ 
+ }
+ #B1{
+     grid-area: main1;
+ }
+ #B2{
+     grid-area: main2;
+ }
+ 
+ /* footer */
+ .footer{
+     display: flex;
+     flex-wrap: nowrap; 
+     background-color: mediumseagreen;
+     justify-content: center;
+     margin-top: auto;
+ }
+  
