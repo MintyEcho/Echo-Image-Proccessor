@@ -12,10 +12,13 @@ const storage = multer.diskStorage({
   destination: (_req, _file, cb) => cb(null, uploadDir),
   filename: (_req, file, cb) => {
     const timestamp = Date.now();
-    const ext = path.extname(file.originalname).toLowerCase();
-    const base = path.basename(file.originalname, ext);
-    cb(null, `${base}-${timestamp}${ext}`);
+    const ext       = path.extname(file.originalname).toLowerCase();
+    const base      = path.basename(file.originalname, ext);
+    // replace spaces and other unsafe chars with hyphens:
+    const safeBase  = base.replace(/\s+/g, '-').replace(/[^a-z0-9\-]/gi, '');
+    cb(null, `${safeBase}-${timestamp}${ext}`);
   }
+  
 });
 const fileFilter = (_req: Request, file: Express.Multer.File, cb: multer.FileFilterCallback) => {
   if (path.extname(file.originalname).toLowerCase() !== '.png') {
