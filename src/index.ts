@@ -24,5 +24,8 @@ app.get('/', (_req, res) => {
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
   console.log(`🚀 Server listening on http://localhost:${PORT}`);
+  setInterval(() => {
+    console.log('still alive...');
+  }, 5000);})
   // **no process.exit()** and no code after this
-});
+

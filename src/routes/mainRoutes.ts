@@ -4,5 +4,5 @@ import uploadResizeRt from './api/uploadResizeRt';
 
 const router = Router();
 router.use('/', uploadRt);
-router.use('/api', uploadResizeRt);
+router.use('/api/images/upload-resize', uploadResizeRt);
 export default router;
