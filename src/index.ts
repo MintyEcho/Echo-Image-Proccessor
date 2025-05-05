@@ -29,3 +29,5 @@ app.listen(PORT, () => {
   }, 100000);})
   // **no process.exit()** and no code after this
 
+
+  export default app; // for testing purposes

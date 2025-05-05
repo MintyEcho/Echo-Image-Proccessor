@@ -114,22 +114,16 @@
   const h = document.getElementById('heightInput').value;
   if (!w || !h) return alert('Please enter width and height.');
 
-  // Fetch the selected image from uploads
-  const blob = await fetch('/uploads/' + encodeURIComponent(selectedImage)).then(r => r.blob());
-  const file = new File([blob], selectedImage, { type: blob.type });
-
-  const formData = new FormData(); // 🟢 Fix: define formData correctly here
-  formData.append('image', file);
+  const formData = new FormData();
+  formData.append('filename', selectedImage);
   formData.append('width', w);
   formData.append('height', h);
 
   try {
-    console.log('📬 Sending resize to:', '/api/images/upload-resize');
-    const res = await fetch('/api/images/upload-resize', {
+    const res = await fetch('/api/images/resize-existing', {
       method: 'POST',
       body: formData
     });
-    console.log('↩️ Got status', res.status);
 
     if (!res.ok) {
       const errJson = await res.json().catch(() => ({}));
@@ -146,6 +140,7 @@
     alert('Error during resize: ' + err.message);
   }
 });
+
 
   </script>
 </body>
