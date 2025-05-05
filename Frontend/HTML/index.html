@@ -46,7 +46,6 @@
     <section class="gallery-section">
       <h2>Gallery</h2>
       <div class="gallery" id="gallery" style="display:flex; gap:1rem; flex-wrap:wrap; margin-top:1em;">
-        <!-- Static entries, URL-encoded -->
         <div class="card">
           <img src="/uploads/akuma%20in%20squiggam-1746166244621.png" alt="Gallery 1" style="width:100px;cursor:pointer;" onclick="selectImage('akuma in squiggam-1746166244621.png')">
         </div>
@@ -60,13 +59,11 @@
   <script>
     let selectedImage = null;
 
-    // Select a gallery image
     function selectImage(filename) {
       selectedImage = filename;
       document.getElementById('resizeSection').style.display = 'block';
     }
 
-    // Upload handler
     document.getElementById('uploadForm').addEventListener('submit', async e => {
       e.preventDefault();
       const fileInput = document.getElementById('imgInput');
@@ -79,8 +76,7 @@
       formData.append('image', file);
 
       try {
-        // correct upload path
-        const res = await fetch('/images/upload', {
+        const res = await fetch('/api/images/upload', { // Ensure this matches your server's upload endpoint
           method: 'POST',
           body: formData
         });
@@ -89,7 +85,6 @@
           throw new Error(data.error || res.statusText);
         }
 
-        // Append new card
         const gallery = document.getElementById('gallery');
         const card = document.createElement('div');
         card.className = 'card';
@@ -102,7 +97,6 @@
         card.appendChild(imgEl);
         gallery.appendChild(card);
 
-        // Auto-select and show resize form
         selectedImage = data.filename;
         document.getElementById('resizeSection').style.display = 'block';
         fileInput.value = '';
@@ -112,50 +106,47 @@
       }
     });
 
-    // Resize handler
     document.getElementById('resizeForm').addEventListener('submit', async e => {
-      e.preventDefault();
-      if (!selectedImage) {
-        return alert('Please select or upload an image first.');
-      }
+  e.preventDefault();
+  if (!selectedImage) return alert('Please select or upload an image first.');
 
-      const w = document.getElementById('widthInput').value;
-      const h = document.getElementById('heightInput').value;
-      if (!w || !h) {
-        return alert('Please enter width and height.');
-      }
+  const w = document.getElementById('widthInput').value;
+  const h = document.getElementById('heightInput').value;
+  if (!w || !h) return alert('Please enter width and height.');
 
-      // Fetch the selected image from uploads
-      const blob = await fetch('/uploads/' + encodeURIComponent(selectedImage)).then(r => r.blob());
-      const file = new File([blob], selectedImage, { type: blob.type });
+  // Fetch the selected image from uploads
+  const blob = await fetch('/uploads/' + encodeURIComponent(selectedImage)).then(r => r.blob());
+  const file = new File([blob], selectedImage, { type: blob.type });
 
-      const formData = new FormData();
-      formData.append('image', file);
-      formData.append('width', w);
-      formData.append('height', h);
+  const formData = new FormData(); // 🟢 Fix: define formData correctly here
+  formData.append('image', file);
+  formData.append('width', w);
+  formData.append('height', h);
 
-      try {
-        console.log('📬 Sending resize to:', '/api/images/upload-resize');
-        // correct resize path
-        const res = await fetch('/api/images/upload-resize', {
-          method: 'POST',
-          body: formData
-        });
-        console.log('↩️ Got status', res.status);
-        if (!res.ok) {
-          const errJson = await res.json().catch(() => ({}));
-          throw new Error(errJson.error || res.statusText);
-        }
-        const blobRes = await res.blob();
-        const url = URL.createObjectURL(blobRes);
-        const resultImage = document.getElementById('resultImage');
-        resultImage.src = url;
-        document.getElementById('resultSection').style.display = 'block';
-      } catch (err) {
-        console.error(err);
-        alert('Error during resize: ' + err.message);
-      }
+  try {
+    console.log('📬 Sending resize to:', '/api/images/upload-resize');
+    const res = await fetch('/api/images/upload-resize', {
+      method: 'POST',
+      body: formData
     });
+    console.log('↩️ Got status', res.status);
+
+    if (!res.ok) {
+      const errJson = await res.json().catch(() => ({}));
+      throw new Error(errJson.error || res.statusText);
+    }
+
+    const blobRes = await res.blob();
+    const url = URL.createObjectURL(blobRes);
+    const resultImage = document.getElementById('resultImage');
+    resultImage.src = url;
+    document.getElementById('resultSection').style.display = 'block';
+  } catch (err) {
+    console.error(err);
+    alert('Error during resize: ' + err.message);
+  }
+});
+
   </script>
 </body>
 </html>

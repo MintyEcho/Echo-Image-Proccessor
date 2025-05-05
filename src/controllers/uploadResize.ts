@@ -14,6 +14,10 @@ export async function uploadAndResize(
   console.log('⚙️  req.file:', req.file);
   console.log('⚙️  req.body:', req.body);
   try {
+    console.log('📥 Received upload-resize request');
+    console.log('Uploaded file:', req.file?.originalname);
+    console.log('Width:', req.body.width, 'Height:', req.body.height);
+
     if (!req.file) {
       res.status(400).json({ error: 'No image uploaded' });
       return;
@@ -62,7 +66,6 @@ export async function uploadAndResize(
     }
   } catch (err) {
     console.error('❌ uploadAndResize error:', err);
-    next(err);
-    return;
+    return next(err);
   }
 }
