@@ -26,6 +26,6 @@ app.listen(PORT, () => {
   console.log(`🚀 Server listening on http://localhost:${PORT}`);
   setInterval(() => {
     console.log('still alive...');
-  }, 5000);})
+  }, 100000);})
   // **no process.exit()** and no code after this
 

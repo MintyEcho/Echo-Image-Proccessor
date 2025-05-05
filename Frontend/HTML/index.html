@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Echo Project</title>
-  <link rel="stylesheet" href="/css/style.css" />
+  <link rel="stylesheet" href="/css/style.css">
 </head>
 <body>
   <header>
@@ -16,122 +16,146 @@
   </header>
 
   <main>
+    <!-- UPLOAD FORM -->
     <section class="form-section">
-      <form id="uploadForm">
-        <label for="img">Image: </label>
-        <input type="file" name="image" id="img" accept=".png" />
-
-        <input type="submit" value="Upload" />
+      <form id="uploadForm" enctype="multipart/form-data">
+        <label for="imgInput">Upload a PNG:</label>
+        <input type="file" id="imgInput" name="image" accept="image/png" required>
+        <button type="submit">Upload</button>
       </form>
     </section>
 
-    <section class="resize-section" style="display: none">
+    <!-- RESIZE FORM -->
+    <section class="resize-section" id="resizeSection" style="display:none; margin-top:1em;">
       <form id="resizeForm">
-        <label for="width">Width:</label>
-        <input type="number" name="width" id="width" required />
-        <label for="height">Height:</label>
-        <input type="number" name="height" id="height" required />
-        <input type="submit" value="Resize" />
+        <label for="widthInput">Width:</label>
+        <input type="number" id="widthInput" name="width" placeholder="e.g. 200" required>
+        <label for="heightInput">Height:</label>
+        <input type="number" id="heightInput" name="height" placeholder="e.g. 200" required>
+        <button type="submit">Resize</button>
       </form>
     </section>
 
+    <!-- RESULT DISPLAY -->
+    <section id="resultSection" style="display:none; margin-top:1em;">
+      <h2>Resized Image:</h2>
+      <img id="resultImage" src="" alt="Resized result" style="max-width:500px;">
+    </section>
+
+    <!-- GALLERY -->
     <section class="gallery-section">
       <h2>Gallery</h2>
-      <div class="gallery" id="gallery"></div>
+      <div class="gallery" id="gallery" style="display:flex; gap:1rem; flex-wrap:wrap; margin-top:1em;">
+        <!-- Static entries, URL-encoded -->
+        <div class="card">
+          <img src="/uploads/akuma%20in%20squiggam-1746166244621.png" alt="Gallery 1" style="width:100px;cursor:pointer;" onclick="selectImage('akuma in squiggam-1746166244621.png')">
+        </div>
+        <div class="card">
+          <img src="/uploads/HOW%20DOES%20SHE%20KNOW.png" alt="Gallery 2" style="width:100px;cursor:pointer;" onclick="selectImage('HOW DOES SHE KNOW.png')">
+        </div>
+      </div>
     </section>
   </main>
 
   <script>
     let selectedImage = null;
 
-    // Load images from server
-    async function loadGallery() {
-      const res = await fetch('/uploads'); // not an API, just accessing statics
-      const files = await fetch('/uploads').then(() => {
-        // simulate known filenames (you could build an endpoint to list them)
-        return [
-          'HOW%20DOES%20SHE%20KNOW.png',
-          'akuma%20in%20squiggam-1746166244621.png'
-        ];
-      });
-
-      const gallery = document.getElementById('gallery');
-      gallery.innerHTML = '';
-      files.forEach(file => {
-        const img = document.createElement('img');
-        img.src = `/uploads/${file}`;
-        img.alt = file;
-        img.classList.add('gallery-image');
-        img.style.cursor = 'pointer';
-
-        img.addEventListener('click', () => {
-          selectedImage = file;
-          document.querySelector('.resize-section').style.display = 'block';
-        });
-
-        const card = document.createElement('div');
-        card.classList.add('card');
-        card.appendChild(img);
-        gallery.appendChild(card);
-      });
+    // Select a gallery image
+    function selectImage(filename) {
+      selectedImage = filename;
+      document.getElementById('resizeSection').style.display = 'block';
     }
 
-    // Upload form
+    // Upload handler
     document.getElementById('uploadForm').addEventListener('submit', async e => {
       e.preventDefault();
-      const fileInput = document.getElementById('img');
+      const fileInput = document.getElementById('imgInput');
       const file = fileInput.files[0];
-      if (!file || file.type !== 'image/png') return alert('Only PNG allowed');
+      if (!file || file.type !== 'image/png') {
+        return alert('Please select a PNG file.');
+      }
 
-      const fd = new FormData();
-      fd.append('image', file);
+      const formData = new FormData();
+      formData.append('image', file);
 
       try {
+        // correct upload path
         const res = await fetch('/images/upload', {
           method: 'POST',
-          body: fd
+          body: formData
         });
-        if (!res.ok) throw new Error('Upload failed');
+        const data = await res.json().catch(() => ({}));
+        if (!res.ok) {
+          throw new Error(data.error || res.statusText);
+        }
 
-        alert('Upload successful');
+        // Append new card
+        const gallery = document.getElementById('gallery');
+        const card = document.createElement('div');
+        card.className = 'card';
+        const imgEl = document.createElement('img');
+        imgEl.src = '/uploads/' + encodeURIComponent(data.filename);
+        imgEl.alt = data.filename;
+        imgEl.style.width = '100px';
+        imgEl.style.cursor = 'pointer';
+        imgEl.onclick = () => selectImage(data.filename);
+        card.appendChild(imgEl);
+        gallery.appendChild(card);
+
+        // Auto-select and show resize form
+        selectedImage = data.filename;
+        document.getElementById('resizeSection').style.display = 'block';
         fileInput.value = '';
-        loadGallery();
       } catch (err) {
-        alert('Error during upload');
         console.error(err);
+        alert('Error during upload: ' + err.message);
       }
     });
 
-    // Resize form
+    // Resize handler
     document.getElementById('resizeForm').addEventListener('submit', async e => {
       e.preventDefault();
-      if (!selectedImage) return alert('Select an image first');
+      if (!selectedImage) {
+        return alert('Please select or upload an image first.');
+      }
 
-      const width = document.getElementById('width').value;
-      const height = document.getElementById('height').value;
+      const w = document.getElementById('widthInput').value;
+      const h = document.getElementById('heightInput').value;
+      if (!w || !h) {
+        return alert('Please enter width and height.');
+      }
 
-      const fd = new FormData();
-      fd.append('image', await fetch(`/uploads/${selectedImage}`).then(r => r.blob()));
-      fd.append('width', width);
-      fd.append('height', height);
+      // Fetch the selected image from uploads
+      const blob = await fetch('/uploads/' + encodeURIComponent(selectedImage)).then(r => r.blob());
+      const file = new File([blob], selectedImage, { type: blob.type });
+
+      const formData = new FormData();
+      formData.append('image', file);
+      formData.append('width', w);
+      formData.append('height', h);
 
       try {
+        console.log('📬 Sending resize to:', '/api/images/upload-resize');
+        // correct resize path
         const res = await fetch('/api/images/upload-resize', {
           method: 'POST',
-          body: fd
+          body: formData
         });
-        if (!res.ok) throw new Error('Resize failed');
-
-        const blob = await res.blob();
-        const url = URL.createObjectURL(blob);
-        window.open(url, '_blank');
+        console.log('↩️ Got status', res.status);
+        if (!res.ok) {
+          const errJson = await res.json().catch(() => ({}));
+          throw new Error(errJson.error || res.statusText);
+        }
+        const blobRes = await res.blob();
+        const url = URL.createObjectURL(blobRes);
+        const resultImage = document.getElementById('resultImage');
+        resultImage.src = url;
+        document.getElementById('resultSection').style.display = 'block';
       } catch (err) {
-        alert('Resize failed');
         console.error(err);
+        alert('Error during resize: ' + err.message);
       }
     });
-
-    loadGallery();
   </script>
 </body>
 </html>

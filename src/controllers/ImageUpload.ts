@@ -8,18 +8,21 @@ const uploadDir = path.resolve(__dirname, '../../uploads');
 if (!fs.existsSync(uploadDir)) fs.mkdirSync(uploadDir);
 
 // Multer setup (unchanged)
+// src/controllers/ImageUpload.ts
+
 const storage = multer.diskStorage({
   destination: (_req, _file, cb) => cb(null, uploadDir),
   filename: (_req, file, cb) => {
-    const timestamp = Date.now();
-    const ext       = path.extname(file.originalname).toLowerCase();
-    const base      = path.basename(file.originalname, ext);
-    // replace spaces and other unsafe chars with hyphens:
-    const safeBase  = base.replace(/\s+/g, '-').replace(/[^a-z0-9\-]/gi, '');
-    cb(null, `${safeBase}-${timestamp}${ext}`);
+    // sanitize the original name (spaces→hyphens, remove unsafe chars)
+    const ext      = path.extname(file.originalname).toLowerCase();
+    const base     = path.basename(file.originalname, ext)
+                          .trim()
+                          .replace(/\s+/g, '-')
+                          .replace(/[^a-z0-9\-]/gi, '');
+    cb(null, `${base}${ext}`);
   }
-  
 });
+
 const fileFilter = (_req: Request, file: Express.Multer.File, cb: multer.FileFilterCallback) => {
   if (path.extname(file.originalname).toLowerCase() !== '.png') {
     return cb(new Error('Only .png files are allowed'));
@@ -39,6 +42,7 @@ export const uploadImage = async (
       res.status(400).json({ error: 'No .png file uploaded' });
       return;
     }
+    
 
     // Any async post-processing could go here:
     // await someAsyncResizeOrUpload(req.file.path);
@@ -48,7 +52,11 @@ export const uploadImage = async (
       filename: req.file.filename,
       path: req.file.path,
     });
-    return;
+  const filePath = path.join(__dirname, '../../uploads', req.file.originalname);
+  if (fs.existsSync(filePath)) {
+  res.status(409).json({ error: 'File already exists' });
+}
+  return;
   } catch (err) {
     next(err);
   }

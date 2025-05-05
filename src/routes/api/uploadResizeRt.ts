@@ -1,8 +1,14 @@
-import express from 'express';
+import { Router } from 'express';
 import { uploadMiddleware } from '../../controllers/ImageUpload';
 import { uploadAndResize } from '../../controllers/uploadResize';
 
-const uploadResizeRt = express.Router();
+const router = Router();
 
-uploadResizeRt.post('/', uploadMiddleware.single('image'), uploadAndResize);
-export default uploadResizeRt;
+// make this explicitly POST /api/images/upload-resize
+router.post(
+  '/upload-resize',
+  uploadMiddleware.single('image'),
+  uploadAndResize
+);
+
+export default router;
