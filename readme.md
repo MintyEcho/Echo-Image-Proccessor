@@ -58,11 +58,14 @@ Echo Image Processor is a project designed to process images through various end
 ## Running Tests
 
 ### Prerequisites
-- Ensure you have Python installed.
+- Ensure you have Node.js installed.
 - Install dependencies using:
     ```
-    pip install -r requirements.txt
+    npm install
     ```
 
 ### Running Unit Tests
 To run the unit tests, execute the following command:
+    ```
+    npm test
+    ```
