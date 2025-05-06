@@ -14,20 +14,8 @@ Echo Image Processor is a project designed to process images through various end
 - **Request Body**: Multipart form-data containing the image file.
 - **Response**: JSON object with the status and image ID.
 
-### 2. **Apply Filter**
-- **Endpoint**: `/filter`
-- **Method**: POST
-- **Description**: Apply a filter to an uploaded image.
-- **Request Body**: 
-    ```json
-    {
-        "image_id": "string",
-        "filter_type": "string" // e.g., grayscale, sepia, blur
-    }
-    ```
-- **Response**: JSON object with the status and a link to the processed image.
 
-### 3. **Resize Image**
+### 2. **Resize Image**
 - **Endpoint**: `/resize`
 - **Method**: POST
 - **Description**: Resize an uploaded image.
@@ -40,18 +28,6 @@ Echo Image Processor is a project designed to process images through various end
     }
     ```
 - **Response**: JSON object with the status and a link to the resized image.
-
-### 4. **Delete Image**
-- **Endpoint**: `/delete`
-- **Method**: DELETE
-- **Description**: Delete an uploaded image from the server.
-- **Request Body**: 
-    ```json
-    {
-        "image_id": "string"
-    }
-    ```
-- **Response**: JSON object with the status of the deletion.
 
 ---
 
@@ -67,5 +43,5 @@ Echo Image Processor is a project designed to process images through various end
 ### Running Unit Tests
 To run the unit tests, execute the following command:
     ```
-    npm test
+    npm run test
     ```
