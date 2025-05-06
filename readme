@@ -1,0 +1,68 @@
+# Echo Image Processor
+
+## Overview
+Echo Image Processor is a project designed to process images through various endpoints. This README provides details about the available endpoints, how to run tests, and other relevant information to help you get started.
+
+---
+
+## Endpoints
+
+### 1. **Upload Image**
+- **Endpoint**: `/upload`
+- **Method**: POST
+- **Description**: Upload an image to the server for processing.
+- **Request Body**: Multipart form-data containing the image file.
+- **Response**: JSON object with the status and image ID.
+
+### 2. **Apply Filter**
+- **Endpoint**: `/filter`
+- **Method**: POST
+- **Description**: Apply a filter to an uploaded image.
+- **Request Body**: 
+    ```json
+    {
+        "image_id": "string",
+        "filter_type": "string" // e.g., grayscale, sepia, blur
+    }
+    ```
+- **Response**: JSON object with the status and a link to the processed image.
+
+### 3. **Resize Image**
+- **Endpoint**: `/resize`
+- **Method**: POST
+- **Description**: Resize an uploaded image.
+- **Request Body**: 
+    ```json
+    {
+        "image_id": "string",
+        "width": "integer",
+        "height": "integer"
+    }
+    ```
+- **Response**: JSON object with the status and a link to the resized image.
+
+### 4. **Delete Image**
+- **Endpoint**: `/delete`
+- **Method**: DELETE
+- **Description**: Delete an uploaded image from the server.
+- **Request Body**: 
+    ```json
+    {
+        "image_id": "string"
+    }
+    ```
+- **Response**: JSON object with the status of the deletion.
+
+---
+
+## Running Tests
+
+### Prerequisites
+- Ensure you have Python installed.
+- Install dependencies using:
+    ```
+    pip install -r requirements.txt
+    ```
+
+### Running Unit Tests
+To run the unit tests, execute the following command:
