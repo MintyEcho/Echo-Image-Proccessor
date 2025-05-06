@@ -120,7 +120,7 @@
   formData.append('height', h);
 
   try {
-    const res = await fetch('/api/images/resize-existing', {
+    const res = await fetch('/api/images/upload-resize', {
       method: 'POST',
       body: formData
     });
