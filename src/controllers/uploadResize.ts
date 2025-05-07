@@ -21,6 +21,7 @@ export async function uploadAndResize(
 
     if (!req.file) {
       res.status(400).json({ error: 'No image uploaded' });
+      return;
     }
 
     const { width, height } = req.body;

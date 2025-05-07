@@ -65,6 +65,7 @@
     }
 
     document.getElementById('uploadForm').addEventListener('submit', async e => {
+      console.log('Uploading image...');
       e.preventDefault();
       const fileInput = document.getElementById('imgInput');
       const file = fileInput.files[0];
@@ -107,15 +108,17 @@
     });
 
     document.getElementById('resizeForm').addEventListener('submit', async e => {
-  e.preventDefault();
+      console.log('Resizing image...');
+      e.preventDefault();
   if (!selectedImage) return alert('Please select or upload an image first.');
 
   const w = document.getElementById('widthInput').value;
   const h = document.getElementById('heightInput').value;
-  if (!w || !h) return alert('Please enter width and height.');
+  if (!w || !h) {return alert('Please enter width and height.');}
+  else if (w || h < 0) {return alert('Please enter a positive number')}
 
   const formData = new FormData();
-  formData.append('filename', selectedImage);
+  formData.append('file', selectedImage);
   formData.append('width', w);
   formData.append('height', h);
 

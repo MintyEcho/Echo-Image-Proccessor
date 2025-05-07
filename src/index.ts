@@ -12,6 +12,7 @@ app.use('/uploads', express.static(path.join(__dirname, '../uploads')));
 
 // JSON parsing & API
 app.use(express.json());
+app.use(express.urlencoded({ extended: true })); // for form data
 app.use(mainRoutes);
 
 // Root route (serve index.html)
