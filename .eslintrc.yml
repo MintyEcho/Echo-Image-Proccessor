@@ -1,3 +1,5 @@
+root: true
+
 env:
   node: true
 
@@ -8,9 +10,9 @@ extends:
 parser: '@typescript-eslint/parser'
 
 parserOptions:
-  ecmaVersion: 9
-  project: ./tsconfig.json
+  ecmaVersion: 2022
   sourceType: module
+  project: './tsconfig.json'
 
 plugins:
   - '@typescript-eslint'

@@ -6,6 +6,9 @@ async function resizeImage(
   height: number,
 ): Promise<Buffer> {
   try {
+    if (!imageBuffer || imageBuffer.length === 0) {
+    throw new Error('Input buffer is invalid');
+  }
     const resizedImage = await sharp(imageBuffer)
       .resize(width, height)
       .png() // Ensure the output is in png format
