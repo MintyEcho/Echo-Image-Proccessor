@@ -4,8 +4,8 @@ import fs from 'fs';
 import path from 'path';
 
 describe('Image Resize Function', () => {
-  const inputImagePath = path.resolve(__dirname, '../../src/tests/test-images/sample.jpg'); // Adjusted path to match the correct location
-  const outputImagePath = path.resolve(__dirname, './test-images/output.jpg');
+  const inputImagePath = path.resolve(__dirname, '../../src/tests/test-images/sample.png'); // Adjusted path to match the correct location
+  const outputImagePath = path.resolve(__dirname, './test-images/output.png');
 
   afterEach(() => {
     // Clean up the output file after each test

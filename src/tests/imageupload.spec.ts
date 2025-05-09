@@ -4,9 +4,14 @@ import request from 'supertest';
 import path from 'path';
 import app from '../index'; // ensure this exports your Express app
 
+beforeAll(() => {
+  // Ensure the server is properly initialized before tests
+  const fixturesDir = path.resolve(__dirname, '../../test-images'); // Adjusted path to match correct project structure
+});
+
 describe('Image Upload Endpoint', () => {
   const uploadUrl = '/api/images/upload';
-  const fixturesDir = path.resolve(__dirname, '../../test-images'); // Adjusted path to match project structure
+  const fixturesDir = path.resolve(__dirname, '../test-images'); // Adjusted path to match project structure
   const validPng = path.join(fixturesDir, 'sample.png');
   const invalidTxt = path.join(fixturesDir, 'not-image.txt');
 

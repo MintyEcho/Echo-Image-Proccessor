@@ -17,8 +17,8 @@ const sharp_1 = __importDefault(require("sharp"));
 const fs_1 = __importDefault(require("fs"));
 const path_1 = __importDefault(require("path"));
 describe('Image Resize Function', () => {
-    const inputImagePath = path_1.default.resolve(__dirname, '../../src/tests/test-images/sample.jpg'); // Adjusted path to match the correct location
-    const outputImagePath = path_1.default.resolve(__dirname, './test-images/output.jpg');
+    const inputImagePath = path_1.default.resolve(__dirname, '../../src/tests/test-images/sample.png'); // Adjusted path to match the correct location
+    const outputImagePath = path_1.default.resolve(__dirname, './test-images/output.png');
     afterEach(() => {
         // Clean up the output file after each test
         if (fs_1.default.existsSync(outputImagePath)) {
