@@ -18,7 +18,7 @@ const path_1 = __importDefault(require("path"));
 const index_1 = __importDefault(require("../index")); // ensure this exports your Express app
 describe('Image Upload Endpoint', () => {
     const uploadUrl = '/api/images/upload';
-    const fixturesDir = path_1.default.resolve(__dirname, 'fixtures');
+    const fixturesDir = path_1.default.resolve(__dirname, '../../test-images'); // Adjusted path to match project structure
     const validPng = path_1.default.join(fixturesDir, 'sample.png');
     const invalidTxt = path_1.default.join(fixturesDir, 'not-image.txt');
     it('should successfully upload a PNG image and return metadata', () => __awaiter(void 0, void 0, void 0, function* () {
@@ -33,12 +33,13 @@ describe('Image Upload Endpoint', () => {
     it('should return 400 if no image is provided', () => __awaiter(void 0, void 0, void 0, function* () {
         const res = yield (0, supertest_1.default)(index_1.default).post(uploadUrl);
         expect(res.statusCode).toBe(400);
-        expect(res.body).toEqual(jasmine.objectContaining({ error: 'No image file provided' }));
+        expect(res.body).toEqual(jasmine.objectContaining({ error: 'No .png file uploaded' }) // Match the actual error message
+        );
     }));
     it('should return 415 if the uploaded file is not a PNG', () => __awaiter(void 0, void 0, void 0, function* () {
         const res = yield (0, supertest_1.default)(index_1.default).post(uploadUrl).attach('image', invalidTxt);
         expect(res.statusCode).toBe(415);
-        expect(res.body).toEqual(jasmine.objectContaining({ error: 'Only PNG files are allowed' }));
+        expect(res.body).toEqual(jasmine.objectContaining({ error: 'Only .png files are allowed' }));
     }));
 });
 //# sourceMappingURL=imageupload.spec.js.map

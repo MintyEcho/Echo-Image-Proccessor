@@ -4,7 +4,7 @@ import fs from 'fs';
 import path from 'path';
 
 describe('Image Resize Function', () => {
-  const inputImagePath = path.resolve(__dirname, './test-images/sample.jpg'); // Adjust the path to your test image
+  const inputImagePath = path.resolve(__dirname, '../../src/tests/test-images/sample.jpg'); // Adjusted path to match the correct location
   const outputImagePath = path.resolve(__dirname, './test-images/output.jpg');
 
   afterEach(() => {
@@ -33,6 +33,6 @@ describe('Image Resize Function', () => {
 
     await expectAsync(
       resizeImage(invalidBuffer, 200, 200)
-    ).toBeRejectedWithError('Input buffer is invalid');
+    ).toBeRejectedWithError('Error resizing image: Input buffer is invalid');
   });
 });

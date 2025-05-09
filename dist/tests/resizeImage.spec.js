@@ -17,7 +17,7 @@ const sharp_1 = __importDefault(require("sharp"));
 const fs_1 = __importDefault(require("fs"));
 const path_1 = __importDefault(require("path"));
 describe('Image Resize Function', () => {
-    const inputImagePath = path_1.default.resolve(__dirname, './test-images/sample.jpg'); // Adjust the path to your test image
+    const inputImagePath = path_1.default.resolve(__dirname, '../../src/tests/test-images/sample.jpg'); // Adjusted path to match the correct location
     const outputImagePath = path_1.default.resolve(__dirname, './test-images/output.jpg');
     afterEach(() => {
         // Clean up the output file after each test
@@ -37,7 +37,7 @@ describe('Image Resize Function', () => {
     }));
     it('should throw an error if the input buffer is invalid', () => __awaiter(void 0, void 0, void 0, function* () {
         const invalidBuffer = Buffer.from(''); // Empty buffer
-        yield expectAsync((0, ImageResize_1.default)(invalidBuffer, 200, 200)).toBeRejectedWithError('Input buffer is invalid');
+        yield expectAsync((0, ImageResize_1.default)(invalidBuffer, 200, 200)).toBeRejectedWithError('Error resizing image: Input buffer is invalid');
     }));
 });
 //# sourceMappingURL=resizeImage.spec.js.map

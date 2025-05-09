@@ -7,7 +7,6 @@
     "start": "nodemon src/index.ts",
     "build": "npx tsc",
     "test": "jasmine",
-    "jasmine": "jasmine",
     "lint": "eslint src/**/*.{ts,tsx}",
     "lint:fix": "eslint src/**/*.{ts,tsx} --fix",
     "format": "prettier \"src/**/*.{ts,tsx,json,md,css,html}\" --write"

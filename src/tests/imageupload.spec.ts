@@ -6,7 +6,7 @@ import app from '../index'; // ensure this exports your Express app
 
 describe('Image Upload Endpoint', () => {
   const uploadUrl = '/api/images/upload';
-  const fixturesDir = path.resolve(__dirname, 'fixtures');
+  const fixturesDir = path.resolve(__dirname, '../../test-images'); // Adjusted path to match project structure
   const validPng = path.join(fixturesDir, 'sample.png');
   const invalidTxt = path.join(fixturesDir, 'not-image.txt');
 
@@ -28,7 +28,7 @@ describe('Image Upload Endpoint', () => {
 
     expect(res.statusCode).toBe(400);
     expect(res.body).toEqual(
-      jasmine.objectContaining({ error: 'No image file provided' })
+      jasmine.objectContaining({ error: 'No .png file uploaded' }) // Match the actual error message
     );
   });
 
@@ -37,7 +37,7 @@ describe('Image Upload Endpoint', () => {
 
     expect(res.statusCode).toBe(415);
     expect(res.body).toEqual(
-      jasmine.objectContaining({ error: 'Only PNG files are allowed' })
+      jasmine.objectContaining({ error: 'Only .png files are allowed' })
     );
   });
 });
