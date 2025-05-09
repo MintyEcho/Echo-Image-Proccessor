@@ -3,12 +3,12 @@ import sharp from 'sharp';
 async function resizeImage(
   imageBuffer: Buffer,
   width: number,
-  height: number,
+  height: number
 ): Promise<Buffer> {
   try {
     if (!imageBuffer || imageBuffer.length === 0) {
-    throw new Error('Input buffer is invalid');
-  }
+      throw new Error('Input buffer is invalid');
+    }
     const resizedImage = await sharp(imageBuffer)
       .resize(width, height)
       .png() // Ensure the output is in png format

@@ -27,7 +27,7 @@ const storage = multer.diskStorage({
 const fileFilter = (
   _req: Request,
   file: Express.Multer.File,
-  cb: multer.FileFilterCallback,
+  cb: multer.FileFilterCallback
 ) => {
   if (path.extname(file.originalname).toLowerCase() !== '.png') {
     return cb(new Error('Only .png files are allowed'));
@@ -39,7 +39,7 @@ export const uploadMiddleware = multer({ storage, fileFilter });
 export const uploadImage = async (
   req: Request,
   res: Response,
-  next: NextFunction,
+  next: NextFunction
 ): Promise<void> => {
   try {
     if (!req.file) {
@@ -57,7 +57,7 @@ export const uploadImage = async (
     const filePath = path.join(
       __dirname,
       '../../uploads',
-      req.file.originalname,
+      req.file.originalname
     );
     if (fs.existsSync(filePath)) {
       res.status(409).json({ error: 'File already exists' });

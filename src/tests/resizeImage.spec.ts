@@ -32,7 +32,7 @@ describe('Image Resize Function', () => {
     const invalidBuffer = Buffer.from(''); // Empty buffer
 
     await expectAsync(
-      resizeImage(invalidBuffer, 200, 200),
+      resizeImage(invalidBuffer, 200, 200)
     ).toBeRejectedWithError('Input buffer is invalid');
   });
 });

@@ -7,7 +7,7 @@ const resizeRt = express.Router();
 resizeRt.get('/', async (req, res) => {
   const imagePath = path.join(
     __dirname,
-    '../../../images/AY AY AY TO THE WINDOOOOOOOOOOOW.png',
+    '../../../images/AY AY AY TO THE WINDOOOOOOOOOOOW.png'
   );
   if (!fs.existsSync(imagePath)) {
     res.status(404).send('Image not found');
