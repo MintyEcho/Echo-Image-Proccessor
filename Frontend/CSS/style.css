@@ -110,3 +110,9 @@ form input[type="submit"]:hover {
     background: #f4f4f9;
     font-weight: bold;
 }
+.selected-glow {
+    outline: 4px solid lightseagreen;
+    outline-offset: 4px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px lightseagreen;
+  }

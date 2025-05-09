@@ -16,6 +16,25 @@
   </header>
 
   <main>
+    <!-- GALLERY -->
+    <section class="gallery-section">
+      <h2>Gallery</h2>
+      <div class="gallery" id="gallery" style="display:flex; gap:1rem; flex-wrap:wrap; margin-top:1em;">
+        <div class="card">
+          <img src="../../uploads/horsing around.png" alt="Gallery 1" style="cursor:pointer;" onclick="selectImage(this)">
+        </div>
+        <div class="card">
+          <img src="../../uploads/lumi lol.jfif" alt="Gallery 2" style="cursor:pointer;" onclick="selectImage(this)">
+        </div>
+        <div class="card">
+          <img src="../../uploads/maxwell.jpg" alt="Gallery 3" style="cursor:pointer;" onclick="selectImage(this)">
+        </div>
+        <div class="card">
+          <img src="../../uploads/Traumatized soldier.jpeg" alt="Gallery 4" style="cursor:pointer;" onclick="selectImage(this)">
+        </div>
+      </div>
+    </section>
+  </main>
     <!-- UPLOAD FORM -->
     <section class="form-section">
       <form id="uploadForm" enctype="multipart/form-data">
@@ -41,28 +60,34 @@
       <h2>Resized Image:</h2>
       <img id="resultImage" src="" alt="Resized result" style="max-width:500px;">
     </section>
-
-    <!-- GALLERY -->
-    <section class="gallery-section">
-      <h2>Gallery</h2>
-      <div class="gallery" id="gallery" style="display:flex; gap:1rem; flex-wrap:wrap; margin-top:1em;">
-        <div class="card">
-          <img src="/uploads/akuma-in-squiggam.png" alt="Gallery 1" style="width:100px;cursor:pointer;" onclick="selectImage('akuma in squiggam-1746166244621.png')">
-        </div>
-        <div class="card">
-          <img src="/uploads/HOW%20DOES%20SHE%20KNOW.png" alt="Gallery 2" style="width:100px;cursor:pointer;" onclick="selectImage('HOW DOES SHE KNOW.png')">
-        </div>
-      </div>
-    </section>
-  </main>
-
+  
   <script>
     let selectedImage = null;
 
-    function selectImage(filename) {
-      selectedImage = filename;
-      document.getElementById('resizeSection').style.display = 'block';
-    }
+    function selectImage(imgElementOrFilename) {
+  // Remove glow from all images
+  document.querySelectorAll('#gallery img').forEach(img => {
+    img.classList.remove('selected-glow');
+  });
+
+  // Determine whether passed argument is an image element or filename string
+  if (typeof imgElementOrFilename === 'string') {
+    selectedImage = imgElementOrFilename;
+
+    // Try to find and glow the corresponding <img>
+    const imgToGlow = [...document.querySelectorAll('#gallery img')].find(
+      img => decodeURIComponent(img.src.split('/').pop()) === selectedImage
+    );
+    if (imgToGlow) imgToGlow.classList.add('selected-glow');
+
+  } else if (imgElementOrFilename instanceof HTMLImageElement) {
+    selectedImage = decodeURIComponent(imgElementOrFilename.src.split('/').pop());
+    imgElementOrFilename.classList.add('selected-glow');
+  }
+
+  document.getElementById('resizeSection').style.display = 'block';
+}
+
 
     document.getElementById('uploadForm').addEventListener('submit', async e => {
       console.log('Uploading image...');
@@ -115,9 +140,10 @@
   const w = document.getElementById('widthInput').value;
   const h = document.getElementById('heightInput').value;
   if (!w || !h) {return alert('Please enter width and height.');}
-
+  else if(w <= 0 || h <= 0) {return alert('Width and height must be positive numbers.');}
+  else if(w > 1000 || h > 1000) {return alert('Width and height must be less than or equal to 1000.');}
   const formData = new FormData();
-  formData.append('file', selectedImage);
+  formData.append('image', selectedImage);
   formData.append('width', w);
   formData.append('height', h);
 
