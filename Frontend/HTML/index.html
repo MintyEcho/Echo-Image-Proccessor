@@ -47,7 +47,7 @@
       <h2>Gallery</h2>
       <div class="gallery" id="gallery" style="display:flex; gap:1rem; flex-wrap:wrap; margin-top:1em;">
         <div class="card">
-          <img src="/uploads/akuma%20in%20squiggam-1746166244621.png" alt="Gallery 1" style="width:100px;cursor:pointer;" onclick="selectImage('akuma in squiggam-1746166244621.png')">
+          <img src="/uploads/akuma-in-squiggam.png" alt="Gallery 1" style="width:100px;cursor:pointer;" onclick="selectImage('akuma in squiggam-1746166244621.png')">
         </div>
         <div class="card">
           <img src="/uploads/HOW%20DOES%20SHE%20KNOW.png" alt="Gallery 2" style="width:100px;cursor:pointer;" onclick="selectImage('HOW DOES SHE KNOW.png')">
@@ -115,7 +115,6 @@
   const w = document.getElementById('widthInput').value;
   const h = document.getElementById('heightInput').value;
   if (!w || !h) {return alert('Please enter width and height.');}
-  else if (w || h < 0) {return alert('Please enter a positive number')}
 
   const formData = new FormData();
   formData.append('file', selectedImage);
@@ -143,8 +142,6 @@
     alert('Error during resize: ' + err.message);
   }
 });
-
-
   </script>
 </body>
 </html>

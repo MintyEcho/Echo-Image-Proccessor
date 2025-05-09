@@ -42,8 +42,6 @@ export const uploadImage = async (
       res.status(400).json({ error: 'No .png file uploaded' });
       return;
     }
-    
-
     // Any async post-processing could go here:
     // await someAsyncResizeOrUpload(req.file.path);
 
