@@ -8,15 +8,14 @@ const uploadDir = path.resolve(__dirname, '../../uploads');
 export async function uploadAndResize(
   req: Request,
   res: Response,
-  next: NextFunction
+  next: NextFunction,
 ): Promise<void> {
   let filebuffer = fs.readFileSync(path.join(uploadDir, req.body.image));
   let width = parseInt(req.body.width);
   let height = parseInt(req.body.height);
 
-  resizeImage(filebuffer, width, height)
-    .then((buffer) => {
-      res.set('Content-Type', 'image/jpeg');
-      res.send(buffer);
-    })
+  resizeImage(filebuffer, width, height).then((buffer) => {
+    res.set('Content-Type', 'image/jpeg');
+    res.send(buffer);
+  });
 }

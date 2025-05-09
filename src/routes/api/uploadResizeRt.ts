@@ -8,7 +8,7 @@ const router = Router();
 router.post(
   '/upload-resize',
   uploadMiddleware.single('image'),
-  uploadAndResize
+  uploadAndResize,
 );
 
 export default router;

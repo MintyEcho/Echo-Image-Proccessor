@@ -19,16 +19,15 @@ app.get('/', (_req, res) => {
   res.sendFile(path.join(__dirname, '../frontend/HTML/index.html'));
 });
 
-
 // === KEEP this at the very bottom ===
 const PORT = process.env.PORT || 8000;
 app.listen(PORT, () => {
   console.log(`🚀 Server listening on http://localhost:${PORT}`);
   setInterval(() => {
     console.log('still alive...');
-  }, 100000);})
+  }, 100000);
+});
 
-  // **no process.exit()** and no code after this
+// **no process.exit()** and no code after this
 
-
-  export default app; // for testing purposes
+export default app; // for testing purposes

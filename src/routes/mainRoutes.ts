@@ -1,8 +1,8 @@
 // src/routes/mainRoutes.ts
 import { Router } from 'express';
-import uploadRt       from './api/uploadRt';         // handles POST /api/images/upload
-import uploadResizeRt from './api/uploadResizeRt';   // now handles POST /api/images/upload-resize
-import resizeRt      from './api/resizeRt';        // handles GET /preview
+import uploadRt from './api/uploadRt'; // handles POST /api/images/upload
+import uploadResizeRt from './api/uploadResizeRt'; // now handles POST /api/images/upload-resize
+import resizeRt from './api/resizeRt'; // handles GET /preview
 import x from './api/x'; // handles GET /api/images/dummy
 const router = Router();
 
@@ -14,4 +14,3 @@ router.use(x);
 router.use('/preview', resizeRt);
 
 export default router;
-

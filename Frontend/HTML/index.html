@@ -1,173 +1,237 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Echo Project</title>
-  <link rel="stylesheet" href="/css/style.css">
-</head>
-<body>
-  <header>
-    <h1>Personal Gallery</h1>
-    <nav>
-      <a href="/">Home</a>
-      <a href="about.html">About</a>
-    </nav>
-  </header>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Echo Project</title>
+    <link rel="stylesheet" href="/css/style.css" />
+  </head>
+  <body>
+    <header>
+      <h1>Personal Gallery</h1>
+      <nav>
+        <a href="/">Home</a>
+        <a href="about.html">About</a>
+      </nav>
+    </header>
 
-  <main>
-    <!-- GALLERY -->
-    <section class="gallery-section">
-      <h2>Gallery</h2>
-      <div class="gallery" id="gallery" style="display:flex; gap:1rem; flex-wrap:wrap; margin-top:1em;">
-        <div class="card">
-          <img src="../../uploads/horsing around.png" alt="Gallery 1" style="cursor:pointer;" onclick="selectImage(this)">
+    <main>
+      <!-- GALLERY -->
+      <section class="gallery-section">
+        <h2>Gallery</h2>
+        <div
+          class="gallery"
+          id="gallery"
+          style="display: flex; gap: 1rem; flex-wrap: wrap; margin-top: 1em"
+        >
+          <div class="card">
+            <img
+              src="../../uploads/horsing around.png"
+              alt="Gallery 1"
+              style="cursor: pointer"
+              onclick="selectImage(this)"
+            />
+          </div>
+          <div class="card">
+            <img
+              src="../../uploads/lumi lol.jfif"
+              alt="Gallery 2"
+              style="cursor: pointer"
+              onclick="selectImage(this)"
+            />
+          </div>
+          <div class="card">
+            <img
+              src="../../uploads/maxwell.jpg"
+              alt="Gallery 3"
+              style="cursor: pointer"
+              onclick="selectImage(this)"
+            />
+          </div>
+          <div class="card">
+            <img
+              src="../../uploads/Traumatized soldier.jpeg"
+              alt="Gallery 4"
+              style="cursor: pointer"
+              onclick="selectImage(this)"
+            />
+          </div>
         </div>
-        <div class="card">
-          <img src="../../uploads/lumi lol.jfif" alt="Gallery 2" style="cursor:pointer;" onclick="selectImage(this)">
-        </div>
-        <div class="card">
-          <img src="../../uploads/maxwell.jpg" alt="Gallery 3" style="cursor:pointer;" onclick="selectImage(this)">
-        </div>
-        <div class="card">
-          <img src="../../uploads/Traumatized soldier.jpeg" alt="Gallery 4" style="cursor:pointer;" onclick="selectImage(this)">
-        </div>
-      </div>
-    </section>
-  </main>
+      </section>
+    </main>
     <!-- UPLOAD FORM -->
     <section class="form-section">
       <form id="uploadForm" enctype="multipart/form-data">
         <label for="imgInput">Upload a PNG:</label>
-        <input type="file" id="imgInput" name="image" accept="image/png" required>
+        <input
+          type="file"
+          id="imgInput"
+          name="image"
+          accept="image/png"
+          required
+        />
         <button type="submit">Upload</button>
       </form>
     </section>
 
     <!-- RESIZE FORM -->
-    <section class="resize-section" id="resizeSection" style="display:none; margin-top:1em;">
+    <section
+      class="resize-section"
+      id="resizeSection"
+      style="display: none; margin-top: 1em"
+    >
       <form id="resizeForm">
         <label for="widthInput">Width:</label>
-        <input type="number" id="widthInput" name="width" placeholder="e.g. 200" required>
+        <input
+          type="number"
+          id="widthInput"
+          name="width"
+          placeholder="e.g. 200"
+          required
+        />
         <label for="heightInput">Height:</label>
-        <input type="number" id="heightInput" name="height" placeholder="e.g. 200" required>
+        <input
+          type="number"
+          id="heightInput"
+          name="height"
+          placeholder="e.g. 200"
+          required
+        />
         <button type="submit">Resize</button>
       </form>
     </section>
 
     <!-- RESULT DISPLAY -->
-    <section id="resultSection" style="display:none; margin-top:1em;">
+    <section id="resultSection" style="display: none; margin-top: 1em">
       <h2>Resized Image:</h2>
-      <img id="resultImage" src="" alt="Resized result" style="max-width:500px;">
+      <img
+        id="resultImage"
+        src=""
+        alt="Resized result"
+        style="max-width: 500px"
+      />
     </section>
-  
-  <script>
-    let selectedImage = null;
 
-    function selectImage(imgElementOrFilename) {
-  // Remove glow from all images
-  document.querySelectorAll('#gallery img').forEach(img => {
-    img.classList.remove('selected-glow');
-  });
+    <script>
+      let selectedImage = null;
 
-  // Determine whether passed argument is an image element or filename string
-  if (typeof imgElementOrFilename === 'string') {
-    selectedImage = imgElementOrFilename;
-
-    // Try to find and glow the corresponding <img>
-    const imgToGlow = [...document.querySelectorAll('#gallery img')].find(
-      img => decodeURIComponent(img.src.split('/').pop()) === selectedImage
-    );
-    if (imgToGlow) imgToGlow.classList.add('selected-glow');
-
-  } else if (imgElementOrFilename instanceof HTMLImageElement) {
-    selectedImage = decodeURIComponent(imgElementOrFilename.src.split('/').pop());
-    imgElementOrFilename.classList.add('selected-glow');
-  }
-
-  document.getElementById('resizeSection').style.display = 'block';
-}
-
-
-    document.getElementById('uploadForm').addEventListener('submit', async e => {
-      console.log('Uploading image...');
-      e.preventDefault();
-      const fileInput = document.getElementById('imgInput');
-      const file = fileInput.files[0];
-      if (!file || file.type !== 'image/png') {
-        return alert('Please select a PNG file.');
-      }
-
-      const formData = new FormData();
-      formData.append('image', file);
-
-      try {
-        const res = await fetch('/api/images/upload', { // Ensure this matches your server's upload endpoint
-          method: 'POST',
-          body: formData
+      function selectImage(imgElementOrFilename) {
+        // Remove glow from all images
+        document.querySelectorAll('#gallery img').forEach((img) => {
+          img.classList.remove('selected-glow');
         });
-        const data = await res.json().catch(() => ({}));
-        if (!res.ok) {
-          throw new Error(data.error || res.statusText);
+
+        // Determine whether passed argument is an image element or filename string
+        if (typeof imgElementOrFilename === 'string') {
+          selectedImage = imgElementOrFilename;
+
+          // Try to find and glow the corresponding <img>
+          const imgToGlow = [...document.querySelectorAll('#gallery img')].find(
+            (img) =>
+              decodeURIComponent(img.src.split('/').pop()) === selectedImage,
+          );
+          if (imgToGlow) imgToGlow.classList.add('selected-glow');
+        } else if (imgElementOrFilename instanceof HTMLImageElement) {
+          selectedImage = decodeURIComponent(
+            imgElementOrFilename.src.split('/').pop(),
+          );
+          imgElementOrFilename.classList.add('selected-glow');
         }
 
-        const gallery = document.getElementById('gallery');
-        const card = document.createElement('div');
-        card.className = 'card';
-        const imgEl = document.createElement('img');
-        imgEl.src = '/uploads/' + encodeURIComponent(data.filename);
-        imgEl.alt = data.filename;
-        imgEl.style.width = '100px';
-        imgEl.style.cursor = 'pointer';
-        imgEl.onclick = () => selectImage(data.filename);
-        card.appendChild(imgEl);
-        gallery.appendChild(card);
-
-        selectedImage = data.filename;
         document.getElementById('resizeSection').style.display = 'block';
-        fileInput.value = '';
-      } catch (err) {
-        console.error(err);
-        alert('Error during upload: ' + err.message);
       }
-    });
 
-    document.getElementById('resizeForm').addEventListener('submit', async e => {
-      console.log('Resizing image...');
-      e.preventDefault();
-  if (!selectedImage) return alert('Please select or upload an image first.');
+      document
+        .getElementById('uploadForm')
+        .addEventListener('submit', async (e) => {
+          console.log('Uploading image...');
+          e.preventDefault();
+          const fileInput = document.getElementById('imgInput');
+          const file = fileInput.files[0];
+          if (!file || file.type !== 'image/png') {
+            return alert('Please select a PNG file.');
+          }
 
-  const w = document.getElementById('widthInput').value;
-  const h = document.getElementById('heightInput').value;
-  if (!w || !h) {return alert('Please enter width and height.');}
-  else if(w <= 0 || h <= 0) {return alert('Width and height must be positive numbers.');}
-  else if(w > 1000 || h > 1000) {return alert('Width and height must be less than or equal to 1000.');}
-  const formData = new FormData();
-  formData.append('image', selectedImage);
-  formData.append('width', w);
-  formData.append('height', h);
+          const formData = new FormData();
+          formData.append('image', file);
 
-  try {
-    const res = await fetch('/api/images/upload-resize', {
-      method: 'POST',
-      body: formData
-    });
+          try {
+            const res = await fetch('/api/images/upload', {
+              // Ensure this matches your server's upload endpoint
+              method: 'POST',
+              body: formData,
+            });
+            const data = await res.json().catch(() => ({}));
+            if (!res.ok) {
+              throw new Error(data.error || res.statusText);
+            }
 
-    if (!res.ok) {
-      const errJson = await res.json().catch(() => ({}));
-      throw new Error(errJson.error || res.statusText);
-    }
+            const gallery = document.getElementById('gallery');
+            const card = document.createElement('div');
+            card.className = 'card';
+            const imgEl = document.createElement('img');
+            imgEl.src = '/uploads/' + encodeURIComponent(data.filename);
+            imgEl.alt = data.filename;
+            imgEl.style.width = '100px';
+            imgEl.style.cursor = 'pointer';
+            imgEl.onclick = () => selectImage(data.filename);
+            card.appendChild(imgEl);
+            gallery.appendChild(card);
 
-    const blobRes = await res.blob();
-    const url = URL.createObjectURL(blobRes);
-    const resultImage = document.getElementById('resultImage');
-    resultImage.src = url;
-    document.getElementById('resultSection').style.display = 'block';
-  } catch (err) {
-    console.error(err);
-    alert('Error during resize: ' + err.message);
-  }
-});
-  </script>
-</body>
+            selectedImage = data.filename;
+            document.getElementById('resizeSection').style.display = 'block';
+            fileInput.value = '';
+          } catch (err) {
+            console.error(err);
+            alert('Error during upload: ' + err.message);
+          }
+        });
+
+      document
+        .getElementById('resizeForm')
+        .addEventListener('submit', async (e) => {
+          console.log('Resizing image...');
+          e.preventDefault();
+          if (!selectedImage)
+            return alert('Please select or upload an image first.');
+
+          const w = document.getElementById('widthInput').value;
+          const h = document.getElementById('heightInput').value;
+          if (!w || !h) {
+            return alert('Please enter width and height.');
+          } else if (w <= 0 || h <= 0) {
+            return alert('Width and height must be positive numbers.');
+          } else if (w > 1000 || h > 1000) {
+            return alert(
+              'Width and height must be less than or equal to 1000.',
+            );
+          }
+          const formData = new FormData();
+          formData.append('image', selectedImage);
+          formData.append('width', w);
+          formData.append('height', h);
+
+          try {
+            const res = await fetch('/api/images/upload-resize', {
+              method: 'POST',
+              body: formData,
+            });
+
+            if (!res.ok) {
+              const errJson = await res.json().catch(() => ({}));
+              throw new Error(errJson.error || res.statusText);
+            }
+
+            const blobRes = await res.blob();
+            const url = URL.createObjectURL(blobRes);
+            const resultImage = document.getElementById('resultImage');
+            resultImage.src = url;
+            document.getElementById('resultSection').style.display = 'block';
+          } catch (err) {
+            console.error(err);
+            alert('Error during resize: ' + err.message);
+          }
+        });
+    </script>
+  </body>
 </html>
