@@ -50,8 +50,8 @@ const uploadImage = (req, res, next) => __awaiter(void 0, void 0, void 0, functi
         }
         // Any async post-processing could go here:
         // await someAsyncResizeOrUpload(req.file.path);
-        res.status(201).json({
-            message: 'Upload successful',
+        res.status(200).json({
+            message: 'Image uploaded successfully',
             filename: req.file.filename,
             path: req.file.path,
         });
