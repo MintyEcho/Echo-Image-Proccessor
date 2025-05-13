@@ -19,13 +19,40 @@ const path_1 = __importDefault(require("path"));
 const uploadDir = path_1.default.resolve(__dirname, '../../uploads');
 function uploadAndResize(req, res) {
     return __awaiter(this, void 0, void 0, function* () {
-        const filebuffer = fs_1.default.readFileSync(path_1.default.join(uploadDir, req.body.image));
-        const width = parseInt(req.body.width);
-        const height = parseInt(req.body.height);
-        (0, ImageResize_1.default)(filebuffer, width, height).then((buffer) => {
-            res.set('Content-Type', 'image/jpeg');
+        try {
+            // Ensure file exists
+            if (!req.file) {
+                res.status(400).json({ error: 'No image uploaded' });
+                return;
+            }
+            // Validate width and height
+            const width = parseInt(req.body.width);
+            const height = parseInt(req.body.height);
+            if (isNaN(width) || isNaN(height) || width <= 0 || height <= 0) {
+                res.status(400).json({ error: 'Invalid width or height' });
+                return;
+            }
+            // Read the uploaded file
+            const filebuffer = fs_1.default.readFileSync(req.file.path);
+            // Resize the image
+            const buffer = yield (0, ImageResize_1.default)(filebuffer, width, height);
+            // Set response headers and send the resized image
+            res.set('Content-Type', 'image/png'); // Assuming output is PNG
             res.send(buffer);
-        });
+        }
+        catch (error) {
+            console.error('Error processing image:', error);
+            res.status(500).json({ error: 'Internal server error' });
+        }
+        finally {
+            // Clean up uploaded file
+            if (req.file && req.file.path) {
+                fs_1.default.unlink(req.file.path, (err) => {
+                    if (err)
+                        console.error('Error deleting file:', err);
+                });
+            }
+        }
     });
 }
 //# sourceMappingURL=uploadResize.js.map

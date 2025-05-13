@@ -8,7 +8,6 @@ describe('Image Upload Endpoint', () => {
   const uploadUrl = '/api/images/upload';
   const fixturesDir = path.resolve(__dirname, 'test-images');
   const validPng = path.join(fixturesDir, 'sample.png');
-  const invalidTxt = path.join(fixturesDir, 'not-image.txt');
 
   it('should successfully upload a PNG image and return metadata', async () => {
     const res = await request(app).post(uploadUrl).attach('image', validPng);
