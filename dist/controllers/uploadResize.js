@@ -20,9 +20,10 @@ const uploadDir = path_1.default.resolve(__dirname, '../../uploads');
 function uploadAndResize(req, res) {
     return __awaiter(this, void 0, void 0, function* () {
         try {
-            // Ensure file exists
-            if (!req.file) {
-                res.status(400).json({ error: 'No image uploaded' });
+            // Accept filename instead of file
+            const filename = req.body.image;
+            if (!filename) {
+                res.status(400).json({ error: 'No image filename provided' });
                 return;
             }
             // Validate width and height
@@ -32,26 +33,22 @@ function uploadAndResize(req, res) {
                 res.status(400).json({ error: 'Invalid width or height' });
                 return;
             }
-            // Read the uploaded file
-            const filebuffer = fs_1.default.readFileSync(req.file.path);
+            // Read the image file from disk
+            const filePath = path_1.default.join(uploadDir, filename);
+            if (!fs_1.default.existsSync(filePath)) {
+                res.status(404).json({ error: 'Image file not found' });
+                return;
+            }
+            const filebuffer = fs_1.default.readFileSync(filePath);
             // Resize the image
             const buffer = yield (0, ImageResize_1.default)(filebuffer, width, height);
             // Set response headers and send the resized image
-            res.set('Content-Type', 'image/png'); // Assuming output is PNG
+            res.set('Content-Type', 'image/png');
             res.send(buffer);
         }
         catch (error) {
             console.error('Error processing image:', error);
             res.status(500).json({ error: 'Internal server error' });
-        }
-        finally {
-            // Clean up uploaded file
-            if (req.file && req.file.path) {
-                fs_1.default.unlink(req.file.path, (err) => {
-                    if (err)
-                        console.error('Error deleting file:', err);
-                });
-            }
         }
     });
 }

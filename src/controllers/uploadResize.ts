@@ -10,9 +10,10 @@ export async function uploadAndResize(
   res: Response
 ): Promise<void> {
   try {
-    // Ensure file exists
-    if (!req.file) {
-      res.status(400).json({ error: 'No image uploaded' });
+    // Accept filename instead of file
+    const filename = req.body.image;
+    if (!filename) {
+      res.status(400).json({ error: 'No image filename provided' });
       return;
     }
 
@@ -24,24 +25,22 @@ export async function uploadAndResize(
       return;
     }
 
-    // Read the uploaded file
-    const filebuffer = fs.readFileSync(req.file.path);
+    // Read the image file from disk
+    const filePath = path.join(uploadDir, filename);
+    if (!fs.existsSync(filePath)) {
+      res.status(404).json({ error: 'Image file not found' });
+      return;
+    }
+    const filebuffer = fs.readFileSync(filePath);
 
     // Resize the image
     const buffer = await resizeImage(filebuffer, width, height);
 
     // Set response headers and send the resized image
-    res.set('Content-Type', 'image/png'); // Assuming output is PNG
+    res.set('Content-Type', 'image/png');
     res.send(buffer);
   } catch (error) {
     console.error('Error processing image:', error);
     res.status(500).json({ error: 'Internal server error' });
-  } finally {
-    // Clean up uploaded file
-    if (req.file && req.file.path) {
-      fs.unlink(req.file.path, (err) => {
-        if (err) console.error('Error deleting file:', err);
-      });
-    }
   }
 }
