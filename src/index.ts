@@ -22,7 +22,7 @@ app.get('/', (_req, res) => {
 // === KEEP this at the very bottom ===
 const PORT = process.env.PORT || 8000;
 app.listen(PORT, () => {
-  console.log(`🚀 Server listening on http://localhost:${PORT}`);
+  console.log(`Server listening on http://localhost:${PORT}`);
   setInterval(() => {
     console.log('still alive...');
   }, 100000);
